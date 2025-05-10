@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Mes Tâches</title></head>
+<body>
+
+<h2>📋 Mes Tâches</h2>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Dataset</th>
+        <th>Date limite</th>
+        <th>Avancement</th>
+        <th>fait</th>
+        <th>Nombre de textes</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="t : ${taches}">
+        <td th:text="${t.id}">1</td>
+        <td th:text="${t.dataset.nomDataset}">Nom</td>
+        <td th:text="${t.dateLimite}">2025-06-01</td>
+        <td th:text="${avancements[t.id] + '%'}">0%</td>
+        <td th:text="${faitsParTache[t.id]}">0</td>
+        <td th:text="${#lists.size(t.couples)}">0</td>
+        <td>
+            <a th:href="@{/annotateur/annoter/{id}(id=${t.id})}">🛠 Travailler</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

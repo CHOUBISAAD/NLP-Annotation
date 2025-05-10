@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Détails du Dataset</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-ENjdO4Dr2bkBIFxQpeo5k2MRpHtDkzO2aFfM9o35U2IfQnsUq+yS+76PVCmYl" crossorigin="anonymous">
+</head>
+<body class="bg-light text-dark">
+
+<div class="container mt-5">
+
+    <div class="card shadow p-4">
+        <h2 class="mb-3" th:text="'🧾 Détails du dataset : ' + ${dataset.nomDataset}"></h2>
+
+        <p><strong>Description :</strong> <span th:text="${dataset.description}"></span></p>
+        <p><strong>Nombre de textes :</strong> <span th:text="${#lists.size(couples)}">0</span></p>
+    </div>
+
+    <div class="card shadow mt-4 p-4">
+        <h3 class="mb-3">📄 Couples de textes</h3>
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+            <tr><th>ID</th><th>Texte 1</th><th>Texte 2</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="ct : ${couples}">
+                <td th:text="${ct.id}">ID</td>
+                <td th:text="${ct.texte1}">texte1</td>
+                <td th:text="${ct.texte2}">texte2</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <nav class="d-flex justify-content-between align-items-center mt-3">
+            <div>
+                <span th:if="${currentPage > 0}">
+                    <a class="btn btn-outline-primary btn-sm" th:href="@{|/admin/datasets/${dataset.id}?page=${currentPage - 1}|}">⬅ Précédent</a>
+                </span>
+                <span th:if="${currentPage + 1 < totalPages}">
+                    <a class="btn btn-outline-primary btn-sm ms-2" th:href="@{|/admin/datasets/${dataset.id}?page=${currentPage + 1}|}">Suivant ➡</a>
+                </span>
+            </div>
+            <p class="mb-0">Page <span th:text="${currentPage + 1}"></span> / <span th:text="${totalPages}"></span></p>
+        </nav>
+    </div>
+
+    <div class="card shadow mt-4 p-4">
+        <h3 class="mb-3">👤 Annotateurs affectés</h3>
+        <table class="table table-bordered table-hover">
+            <thead class="table-light">
+            <tr><th>ID</th><th>Nom</th><th>Prénom</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="a : ${annotateurs}">
+                <td th:text="${a.id}">ID</td>
+                <td th:text="${a.nom}">Nom</td>
+                <td th:text="${a.prenom}">Prénom</td>
+                <td>
+                    <form th:action="@{|/admin/datasets/${dataset.id}/desaffecter/${a.id}|}" method="post">
+                        <button type="submit" class="btn btn-sm btn-danger">❌ Désaffecter</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-3">
+        <a th:href="@{/admin/datasets}" class="btn btn-secondary">⬅ Retour aux datasets</a>
+    </div>
+
+</div>
+
+</body>
+</html>

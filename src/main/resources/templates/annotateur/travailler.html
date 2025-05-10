@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Annotation</title></head>
+<body>
+<h2 th:text="'📝 Dataset : ' + ${dataset.nomDataset}"></h2>
+<p th:text="${dataset.description}">Description</p>
+
+<hr/>
+
+<form th:action="@{/annotateur/annoter/{tacheId}(tacheId=${tache.id})}" method="post">
+    <input type="hidden" name="coupleId" th:value="${couple.id}" />
+    <input type="hidden" name="index" th:value="${index}" />
+
+    <p><strong>Texte 1:</strong> <span th:text="${couple.texte1}"></span></p>
+    <p><strong>Texte 2:</strong> <span th:text="${couple.texte2}"></span></p>
+
+    <tr th:each="c : ${classes}">
+        <td>
+            <input type="radio" th:name="choix" th:value="${c.nomClasse}"
+                   th:checked="${annotationExistante != null and annotationExistante.choixChoisi == c.nomClasse}" />
+            <span th:text="${c.nomClasse}">Nom</span>
+        </td>
+    </tr>
+
+    <button type="submit" name="action" value="valider">✅ Valider</button>
+    <button type="submit" name="action" value="precedent" th:if="${index > 0}">⬅ Précédent</button>
+    <button type="submit" name="action" value="suivant" th:if="${index < total - 1}">➡ Suivant</button>
+</form>
+
+</body>
+</html>
