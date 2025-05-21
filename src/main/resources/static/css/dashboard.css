@@ -1,0 +1,50 @@
+/* dashboard.css */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f5fefc;
+}
+
+.sidebar {
+    height: 100vh;
+    background: linear-gradient(180deg, #00b894, #55efc4); /* Vert-bleu doux */
+    padding-top: 30px;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h5 {
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 30px;
+}
+
+.sidebar a {
+    color: #ffffff;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, padding-left 0.3s ease;
+}
+
+.sidebar a:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    padding-left: 30px;
+}
+
+.sidebar a.text-danger:hover {
+    background-color: rgba(255, 0, 0, 0.2);
+}
+
+main {
+    background-color: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-top: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+h2, h4 {
+    color: #2d3436;
+}

@@ -1,0 +1,26 @@
+/* Par défaut, sidebar visible avec largeur 250px */
+/*static/css/theme.css*/
+.sidebar {
+    width: 250px;
+    position: fixed;
+    top: 0; left: 0;
+    height: 100vh;
+    transition: transform 0.3s ease;
+    z-index: 1030;
+}
+
+/* Quand sidebar caché : on le translate à gauche */
+body.sidebar-hidden .sidebar {
+    transform: translateX(-250px);
+}
+
+/* Le contenu principal doit avoir une marge à gauche égale à la largeur du sidebar */
+.content {
+    margin-left: 250px;
+    transition: margin-left 0.3s ease;
+}
+
+/* Quand sidebar caché, on enlève cette marge */
+body.sidebar-hidden .content {
+    margin-left: 0;
+}

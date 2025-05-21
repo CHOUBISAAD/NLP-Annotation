@@ -1,31 +1,139 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Annotation</title></head>
+<head>
+    <title>Annotation</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+        #sidebar {
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            height: 100vh;
+            background-color: #343a40;
+            color: #fff;
+            transition: left 0.3s;
+            padding-top: 60px;
+        }
+        #sidebar.active {
+            left: 0;
+        }
+        #sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        #sidebar ul li {
+            padding: 10px 20px;
+        }
+        #sidebar ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+        #content {
+            margin-left: 0;
+            transition: margin-left 0.3s;
+        }
+        #content.shifted {
+            margin-left: 250px;
+        }
+        #toggleBtn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 999;
+        }
+    </style>
+</head>
 <body>
-<h2 th:text="'📝 Dataset : ' + ${dataset.nomDataset}"></h2>
-<p th:text="${dataset.description}">Description</p>
 
-<hr/>
+<!-- Bouton pour toggle la sidebar -->
+<button id="toggleBtn" class="btn btn-outline-dark">☰</button>
 
-<form th:action="@{/annotateur/annoter/{tacheId}(tacheId=${tache.id})}" method="post">
-    <input type="hidden" name="coupleId" th:value="${couple.id}" />
-    <input type="hidden" name="index" th:value="${index}" />
+<!-- Sidebar -->
+<div id="sidebar">
+    <ul>
+        <li class="nav-item"><a href="/annotateur/home" class="nav-link text-white"><i class="fas fa-home me-2"></i> Accueil</a></li>
+        <li><a href="/annotateur/mes-taches"><i class="fas fa-tasks me-2"></i> Mes Tâches</a></li>
+<!--        <li><a href="/annotateur/profil"><i class="fas fa-user me-2"></i>-->
+<!--            Mon Profil</a></li>-->
+        <li><a href="/logout"><i class="fas fa-sign-out-alt me-2 text-danger"></i>
+            Déconnexion</a></li>
+    </ul>
+</div>
 
-    <p><strong>Texte 1:</strong> <span th:text="${couple.texte1}"></span></p>
-    <p><strong>Texte 2:</strong> <span th:text="${couple.texte2}"></span></p>
+<!-- Contenu principal -->
+<div id="content" class="container mt-4">
 
-    <tr th:each="c : ${classes}">
-        <td>
-            <input type="radio" th:name="choix" th:value="${c.nomClasse}"
-                   th:checked="${annotationExistante != null and annotationExistante.choixChoisi == c.nomClasse}" />
-            <span th:text="${c.nomClasse}">Nom</span>
-        </td>
-    </tr>
+    <h2 class="text-center" th:text="' Dataset : ' + ${dataset.nomDataset}"></h2>
+    <p class="text-center lead" th:text="${dataset.description}">Description</p>
+    <hr/>
 
-    <button type="submit" name="action" value="valider">✅ Valider</button>
-    <button type="submit" name="action" value="precedent" th:if="${index > 0}">⬅ Précédent</button>
-    <button type="submit" name="action" value="suivant" th:if="${index < total - 1}">➡ Suivant</button>
-</form>
+    <div th:if="${message}" class="alert alert-success text-center" th:text="${message}"></div>
+
+    <!-- 🔄 Filtres -->
+    <div class="mb-3 text-center">
+        <a th:href="@{/annotateur/annoter/{id}(id=${tache.id}, filtre='non-annotes')}" class="btn btn-outline-info"><i class="fas fa-circle-xmark me-2 text-warning"></i> Non annotés</a>
+        <a th:href="@{/annotateur/annoter/{id}(id=${tache.id}, filtre='tous')}" class="btn btn-outline-secondary"><i class="fas fa-list-ul me-2"></i> Tous</a>
+    </div>
+
+    <form th:action="@{/annotateur/annoter/{tacheId}(tacheId=${tache.id})}" method="post">
+        <input type="hidden" name="coupleId" th:value="${couple.id}" />
+        <input type="hidden" name="index" th:value="${index}" />
+        <input type="hidden" name="filtre" th:value="${filtre}" />
+
+        <div class="row mb-3">
+            <div class="col">
+                <p><strong>Texte 1:</strong></p>
+                <blockquote class="blockquote mb-0" th:text="${couple.texte1}">Texte 1</blockquote>
+            </div>
+            <div class="col">
+                <p><strong>Texte 2:</strong></p>
+                <blockquote class="blockquote mb-0" th:text="${couple.texte2}">Texte 2</blockquote>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+            <tr><th>Choix</th><th>Classe</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="c : ${classes}">
+                <td>
+                    <input type="radio" th:name="choix" th:value="${c.nomClasse}"
+                           th:checked="${annotationExistante != null and annotationExistante.choixChoisi == c.nomClasse}" />
+                </td>
+                <td th:text="${c.nomClasse}">Classe</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="form-group text-center">
+            <button type="submit" name="action" value="valider" class="btn btn-success"><i class="fas fa-check me-2 text-success"></i> Valider</button>
+            <button type="submit" name="action" value="precedent" th:if="${index > 0}" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i> Précédent</button>
+            <button type="submit" name="action" value="suivant" th:if="${index < total - 1}" class="btn btn-secondary"><i class="fas fa-arrow-right me-2"></i> Suivant</button>
+        </div>
+    </form>
+
+    <div class="text-center">
+        <a href="/annotateur/mes-taches" class="btn btn-primary mt-3">↩ Retour à Mes Tâches</a>
+    </div>
+
+</div>
+
+<script>
+    const toggleBtn = document.getElementById('toggleBtn');
+    const sidebar = document.getElementById('sidebar');
+    const content = document.getElementById('content');
+
+    toggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+        content.classList.toggle('shifted');
+    });
+</script>
 
 </body>
 </html>

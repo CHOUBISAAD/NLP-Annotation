@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<body>
+
+<!-- Sidebar fragment (fragments/sidebar.html) -->
+<nav id="sidebar" class="bg-white border-end sidebar shadow-sm position-fixed top-0 start-0 vh-100 p-3" style="width: 250px; transition: transform 0.3s ease;">
+    <h5 class="text-center mb-4"><i class="fas fa-chart-pie me-2"></i> Admin</h5>
+    <ul class="nav flex-column px-2">
+
+        <li class="nav-item"><a th:href="@{/admin/home}" class="nav-link"><i class="fas fa-home me-2"></i> Retour à l'accueil</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/annotateurs}"><i class="fas fa-user-cog me-2"></i> Gérer les annotateurs</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/annotateurs/create}"><i class="fas fa-user-plus me-2"></i> Ajouter un annotateur</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/annotateurs/avancement}"><i class="fas fa-chart-line me-2"></i> Avancement</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/datasets}"><i class="fas fa-database me-2"></i> Gérer les datasets</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/admin/annotations/export}"><i class="fas fa-file-export me-2"></i> Exporter les annotations</a></li>
+        <li class="nav-item"><a class="nav-link text-danger" th:href="@{/logout}"><i class="fas fa-sign-out-alt me-2 text-danger"></i> Déconnexion</a></li>
+    </ul>
+</nav>
+
+
+</body>
+</html>

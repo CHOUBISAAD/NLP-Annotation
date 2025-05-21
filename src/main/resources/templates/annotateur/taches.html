@@ -1,36 +1,121 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Mes Tâches</title></head>
+<head>
+    <meta charset="UTF-8">
+    <title>Mes Tâches</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+        #sidebar {
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            height: 100vh;
+            background-color: #343a40;
+            color: #fff;
+            transition: left 0.3s;
+            padding-top: 60px;
+        }
+        #sidebar.active {
+            left: 0;
+        }
+        #sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        #sidebar ul li {
+            padding: 10px 20px;
+        }
+        #sidebar ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+        #content {
+            margin-left: 0;
+            transition: margin-left 0.3s;
+        }
+        #content.shifted {
+            margin-left: 250px;
+        }
+        #toggleBtn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 999;
+        }
+    </style>
+</head>
 <body>
 
-<h2>📋 Mes Tâches</h2>
+<!-- Bouton pour afficher/masquer la sidebar -->
+<button id="toggleBtn" class="btn btn-outline-dark">☰</button>
 
-<table border="1">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Dataset</th>
-        <th>Date limite</th>
-        <th>Avancement</th>
-        <th>fait</th>
-        <th>Nombre de textes</th>
-        <th>Action</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="t : ${taches}">
-        <td th:text="${t.id}">1</td>
-        <td th:text="${t.dataset.nomDataset}">Nom</td>
-        <td th:text="${t.dateLimite}">2025-06-01</td>
-        <td th:text="${avancements[t.id] + '%'}">0%</td>
-        <td th:text="${faitsParTache[t.id]}">0</td>
-        <td th:text="${#lists.size(t.couples)}">0</td>
-        <td>
-            <a th:href="@{/annotateur/annoter/{id}(id=${t.id})}">🛠 Travailler</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<!-- Sidebar -->
+<div id="sidebar">
+    <ul>
+        <li class="nav-item"><a href="/annotateur/home" class="nav-link text-white"><i class="fas fa-home me-2"></i> Accueil</a></li>
+        <li><a href="/annotateur/mes-taches"><i class="fas fa-tasks me-2"></i> Mes Tâches</a></li>
+<!--        <li><a href="/annotateur/profil"><i class="fas fa-user me-2"></i>-->
+<!--            Mon Profil</a></li>-->
+        <li><a href="/logout"><i class="fas fa-sign-out-alt me-2 text-danger"></i>
+            Déconnexion</a></li>
+    </ul>
+</div>
+
+<!-- Contenu principal -->
+<div id="content" class="container mt-4">
+    <h2 class="text-center">	<i class="fas fa-tasks me-2"></i> Mes Tâches</h2>
+
+    <div class="text-center mb-3">
+        <a href="/logout" class="btn btn-danger">Déconnexion</a>
+    </div>
+
+    <table class="table table-bordered mt-3">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Dataset</th>
+            <th>Date limite</th>
+            <th>Avancement</th>
+            <th>Fait</th>
+            <th>Nombre de textes</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="t : ${taches}">
+            <td th:text="${t.id}">1</td>
+            <td th:text="${t.dataset.nomDataset}">Nom</td>
+            <td th:text="${t.dateLimite}">2025-06-01</td>
+            <td th:text="${avancements[t.id] + '%'}">0%</td>
+            <td th:text="${faitsParTache[t.id]}">0</td>
+            <td th:text="${#lists.size(t.couples)}">0</td>
+            <td>
+                <a th:href="@{/annotateur/annoter/{id}(id=${t.id})}" class="btn btn-primary">🛠 Travailler</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    const toggleBtn = document.getElementById('toggleBtn');
+    const sidebar = document.getElementById('sidebar');
+    const content = document.getElementById('content');
+
+    toggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+        content.classList.toggle('shifted');
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 </html>

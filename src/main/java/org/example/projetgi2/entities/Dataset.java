@@ -25,15 +25,15 @@ public class Dataset {
     private String nomDataset;
     private String description;
 
-    @OneToMany(mappedBy = "dataset", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "dataset", cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.LAZY)
     private List<CoupleTexte> textes;
 
     // ✅ ajout de la liste des textes
 
-    @OneToMany(mappedBy = "dataset", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "dataset", cascade = CascadeType.ALL,orphanRemoval = true ,fetch = FetchType.LAZY)
     private List<Tache> taches;
 
-    @OneToMany(mappedBy = "dataset", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "dataset", cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ClassePossible> classes;
 
 }

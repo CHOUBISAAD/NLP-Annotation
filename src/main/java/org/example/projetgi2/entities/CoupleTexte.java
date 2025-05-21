@@ -34,12 +34,20 @@ public class CoupleTexte {
     private Dataset dataset;
     // ✅ lien vers le dataset auquel ce texte appartient
 
-    @OneToMany(mappedBy = "texte", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "texte", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Annotation> annotations;
 
     public CoupleTexte(String texte1, String texte2) {
         this.texte1 = texte1;
         this.texte2 = texte2;
     }
+
+    public void setTache(Tache tache) {
+        this.tache = tache;
+        if (tache != null && !tache.getCouples().contains(this)) {
+            tache.getCouples().add(this);
+        }
+    }
+
 }
 

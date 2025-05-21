@@ -34,4 +34,16 @@ public interface AnnotationRepository extends JpaRepository<Annotation, Long> {
 
     @Query("SELECT COUNT(a) FROM Annotation a WHERE a.texte.dataset.id = :datasetId")
     long countAnnotationsByDatasetId(@Param("datasetId") Long datasetId);
+
+    long countByAnnotateurAndTexte(Annotateur annotateur, CoupleTexte texte);
+
+    List<Annotation> findByTexte_Dataset_Id(Long datasetId);
+
+    @Query("SELECT COUNT(a) FROM Annotation a WHERE a.annotateur = :annotateur AND a.texte.tache IN :taches")
+    long countByAnnotateurAndTachesIn(@Param("annotateur") Annotateur annotateur,
+                                      @Param("taches") List<Tache> taches);
+
+    @Query("SELECT COUNT(a) FROM Annotation a WHERE a.annotateur = :annotateur AND a.texte.tache = :tache")
+    long countByAnnotateurAndTache(@Param("annotateur") Annotateur annotateur, @Param("tache") Tache tache);
+
 }

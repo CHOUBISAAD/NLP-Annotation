@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,11 +21,18 @@ public class AdminAnnotationController {
     private AnnotationRepository annotationRepository;
 
     @GetMapping("/annotations/export")
-    public void exporterAnnotations(HttpServletResponse response) throws IOException {
+    public void exporterAnnotations(@RequestParam(required = false) Long datasetId, HttpServletResponse response) throws IOException {
         response.setContentType("text/csv");
         response.setHeader("Content-Disposition", "attachment; filename=annotations.csv");
 
-        List<Annotation> annotations = annotationRepository.findAll();
+        List<Annotation> annotations;
+
+        if (datasetId != null) {
+            annotations = annotationRepository.findByTexte_Dataset_Id(datasetId);
+        } else {
+            annotations = annotationRepository.findAll();
+        }
+
         try (PrintWriter writer = response.getWriter()) {
             writer.println("text1,text2,annotation");
             for (Annotation ann : annotations) {
@@ -36,4 +44,5 @@ public class AdminAnnotationController {
             }
         }
     }
+
 }

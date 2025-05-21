@@ -1,9 +1,6 @@
 package org.example.projetgi2.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.NamedEntityGraph;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import lombok.*;
 
@@ -18,10 +15,10 @@ import java.util.List;
 @Entity
 public class Annotateur extends Utilisateur {
 
-    @OneToMany(mappedBy = "annotateur")
+    @OneToMany(mappedBy = "annotateur",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Annotation> annotations;
 
-    @OneToMany(mappedBy = "annotateur")
+    @OneToMany(mappedBy = "annotateur", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Tache> taches;
 
     public void addTache(Tache tache) {
