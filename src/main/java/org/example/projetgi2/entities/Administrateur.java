@@ -5,18 +5,14 @@ import jakarta.persistence.Entity;
 @Entity
 public class Administrateur extends Utilisateur {
 
-    // Constructeur vide requis par Hibernate
     public Administrateur() {
         super();
     }
 
-    // Constructeur avec tous les champs (hérités de Utilisateur)
     public Administrateur(Long id, String nom, String prenom, String login, String password, Role role) {
         super(id, nom, prenom, login, password, role);
     }
 
-    // Getters et setters pour les champs hérités (redondants si déjà dans Utilisateur)
-    // Facultatifs ici si les méthodes de la classe parent sont public
 
     @Override
     public Long getId() {

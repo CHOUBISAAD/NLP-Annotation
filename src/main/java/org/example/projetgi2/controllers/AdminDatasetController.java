@@ -28,14 +28,26 @@ public class AdminDatasetController {
     private TacheRepository tacheRepository;
     @Autowired
     private AnnotateurRepository  annotateurRepository;
-
     @Autowired
     private AnnotationRepository annotationRepository;
+
 
     @GetMapping
     public String listDatasets(Model model) {
         List<Dataset> datasets = datasetRepository.findAll();
+
+        Map<Dataset, Double> avancements = new LinkedHashMap<>();
+
+        for (Dataset dataset : datasets) {
+            long TotaleSize = dataset.getTextes().size();
+            long annotatedTexts= annotationRepository.countByDatasetId(dataset.getId());
+            float avancement = (TotaleSize == 0) ? 0 : ((float) annotatedTexts * 100) / TotaleSize;
+
+            avancements.put(dataset, (double) avancement);
+        }
         model.addAttribute("datasets", datasets);
+        model.addAttribute("avancements", avancements);
+
         return "admin/datasets/table";
     }
 
@@ -88,7 +100,6 @@ public class AdminDatasetController {
         Annotateur desaffecte = annotateurRepository.findById(annotateurId)
                 .orElseThrow(() -> new RuntimeException("Annotateur introuvable"));
 
-        // Récupère ses tâches sur ce dataset
         List<Tache> taches = tacheRepository.findByDatasetIdAndAnnotateurId(datasetId, annotateurId);
 
         // Récupère les autres annotateurs affectés
@@ -159,9 +170,10 @@ public class AdminDatasetController {
                 String line;
                 boolean isFirstLine = true;
                 while ((line = reader.readLine()) != null) {
+                    //bach nskipiw l firt line
                     if (isFirstLine) {
                         isFirstLine = false;
-                        continue; // skip header
+                        continue;
                     }
                     String[] columns = line.split(",");
                     if (columns.length >= 2) {
@@ -230,6 +242,7 @@ public class AdminDatasetController {
                                       @RequestParam("annotateurIds") List<Long> annotateurIds) {
         Dataset dataset = datasetRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Dataset introuvable"));
+
         List<CoupleTexte> textes = dataset.getTextes();
         List<Annotateur> annotateurs = annotateurRepository.findAllById(annotateurIds);
 

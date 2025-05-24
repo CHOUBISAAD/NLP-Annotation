@@ -27,7 +27,7 @@ public class AppInitConfig {
                 admin.setNom("Admin");
                 admin.setPrenom("Principal");
                 admin.setLogin("admin");
-                admin.setPassword(passwordEncoder.encode("admin123")); // Change as needed
+                admin.setPassword(passwordEncoder.encode("admin123"));
                 admin.setRole(adminRole);
                 System.out.println("Mot de passe encodé : " + admin.getPassword());
 

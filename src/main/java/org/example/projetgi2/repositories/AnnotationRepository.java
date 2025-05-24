@@ -1,9 +1,6 @@
 package org.example.projetgi2.repositories;
 
-import org.example.projetgi2.entities.Annotateur;
-import org.example.projetgi2.entities.Annotation;
-import org.example.projetgi2.entities.CoupleTexte;
-import org.example.projetgi2.entities.Tache;
+import org.example.projetgi2.entities.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -45,5 +42,9 @@ public interface AnnotationRepository extends JpaRepository<Annotation, Long> {
 
     @Query("SELECT COUNT(a) FROM Annotation a WHERE a.annotateur = :annotateur AND a.texte.tache = :tache")
     long countByAnnotateurAndTache(@Param("annotateur") Annotateur annotateur, @Param("tache") Tache tache);
+
+
+    @Query("SELECT COUNT(a) FROM Annotation a WHERE a.texte.dataset.id = :datasetId")
+    long countByDatasetId(@Param("datasetId") Long datasetId);
 
 }

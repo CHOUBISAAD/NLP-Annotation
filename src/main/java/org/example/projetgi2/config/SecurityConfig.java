@@ -44,6 +44,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationSuccessHandler successHandler() {
+
         return new CustomAuthenticationSuccessHandler();
     }
 
@@ -55,6 +56,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+
         return new BCryptPasswordEncoder(5);
     }
 }

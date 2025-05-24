@@ -28,7 +28,6 @@ public class Dataset {
     @OneToMany(mappedBy = "dataset", cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.LAZY)
     private List<CoupleTexte> textes;
 
-    // ✅ ajout de la liste des textes
 
     @OneToMany(mappedBy = "dataset", cascade = CascadeType.ALL,orphanRemoval = true ,fetch = FetchType.LAZY)
     private List<Tache> taches;

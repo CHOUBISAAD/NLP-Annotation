@@ -32,9 +32,8 @@ public class CoupleTexte {
     @ManyToOne
     @JoinColumn(name = "dataset_id")
     private Dataset dataset;
-    // ✅ lien vers le dataset auquel ce texte appartient
 
-    @OneToMany(mappedBy = "texte", cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "texte", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Annotation> annotations;
 
     public CoupleTexte(String texte1, String texte2) {

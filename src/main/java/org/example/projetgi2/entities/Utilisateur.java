@@ -10,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+
 public abstract class Utilisateur implements UserDetails {
 
     @Id
@@ -24,7 +25,6 @@ public abstract class Utilisateur implements UserDetails {
     @ManyToOne
     private Role role;
 
-    // === Constructeurs ===
 
     public Utilisateur() {}
 
@@ -37,7 +37,6 @@ public abstract class Utilisateur implements UserDetails {
         this.role = role;
     }
 
-    // === Getters & Setters ===
 
     public Long getId() {
         return id;
